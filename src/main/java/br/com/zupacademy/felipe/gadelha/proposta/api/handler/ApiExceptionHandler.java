@@ -106,7 +106,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 				.timestamp(OffsetDateTime.now())
 				.status(ex.getStatus().value())
 				.title(ex.getStatus().getReasonPhrase() + DOCUMENTATION)
-				.details(ex.getMessage())
+				.details(ex.getMessage().replace("\"", ""))
 				.developerMessage(ex.getClass().getName())
 				.build(), ex.getStatus());
 	}

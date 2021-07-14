@@ -9,18 +9,13 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 import br.com.zupacademy.felipe.gadelha.proposta.api.validator.annotation.CpfOrCnpj;
-import br.com.zupacademy.felipe.gadelha.proposta.api.validator.annotation.UniqueValue;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Proposal;
-
 
 public class ProposalRq {
 	
 	@NotNull @NotBlank 
 	@Size(max = 14) 
-	@CpfOrCnpj
-	@UniqueValue(domainClass = Proposal.class, 
-		fieldName = "document", 
-		message = "Já existe outra proposta com este documento")
+	@CpfOrCnpj 
 	private String document;
 	@NotNull @NotBlank @Email
 	private String email;

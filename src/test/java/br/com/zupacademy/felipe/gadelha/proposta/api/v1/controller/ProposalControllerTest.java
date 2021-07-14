@@ -1,8 +1,10 @@
 package br.com.zupacademy.felipe.gadelha.proposta.api.v1.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
@@ -48,6 +50,7 @@ class ProposalControllerTest {
 		manager.createQuery("delete from Proposal").executeUpdate();
 		manager.flush();
 	}
+	
 	@Test
 	@DisplayName("should successfully save a proposal")
 	void test() throws JsonProcessingException, Exception {
@@ -77,5 +80,21 @@ class ProposalControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jackson.toJson(proposalRq)))
 		.andExpect(status().isBadRequest());
+	}		
+	@Test
+	@DisplayName("should return 400 for proposal with document repeated")
+	void test2() throws JsonProcessingException, Exception {
+		var document = "711.790.020-24";
+		var proposalRq = new ProposalRq(document, "felipe@email.com", "Felipe Gadelha", "Rua 1", new BigDecimal(3000));
+		mockMvc.perform(post(BASE_PATH)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jackson.toJson(proposalRq)))
+		.andExpect(status().isCreated());
+		var proposalRqRepeat = new ProposalRq(document, "felipe@test.com", "Felipe teste", "Rua 2", new BigDecimal(3000));
+		mockMvc.perform(post(BASE_PATH)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jackson.toJson(proposalRqRepeat)))
+		.andExpect(status().isUnprocessableEntity())
+		.andExpect(jsonPath("$.details", is("422 UNPROCESSABLE_ENTITY Já existe uma proposta com esse documento")));
 	}		
 }

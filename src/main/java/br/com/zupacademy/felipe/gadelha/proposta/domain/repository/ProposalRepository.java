@@ -8,4 +8,6 @@ import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Proposal;
 
 public interface ProposalRepository extends JpaRepository<Proposal, UUID>{
 
+	boolean existsByDocument(String document);
+
 }
