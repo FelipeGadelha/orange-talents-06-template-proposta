@@ -29,3 +29,8 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
+#feign:#  circuitbreaker:#    enabled: true
+app:
+  solicitation:
+    url: http://localhost:9999
+    path: /api/solicitacao

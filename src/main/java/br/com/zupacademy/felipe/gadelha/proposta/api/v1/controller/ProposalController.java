@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.zupacademy.felipe.gadelha.proposta.api.integration.AnalyzeClient;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.ProposalRq;
+import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.SolicitationRq;
+import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Proposal;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.repository.ProposalRepository;
 
 @RestController
@@ -20,24 +24,40 @@ import br.com.zupacademy.felipe.gadelha.proposta.domain.repository.ProposalRepos
 public class ProposalController {
 
 	private final ProposalRepository proposalRepository;
+	private final AnalyzeClient integration;
 
 	@Autowired
-	public ProposalController(ProposalRepository proposalRepository) {
+	public ProposalController(ProposalRepository proposalRepository, AnalyzeClient integration) {
 		this.proposalRepository = proposalRepository;
+		this.integration = integration;
 	}
 	@PostMapping
-	public ResponseEntity<?> save(@Valid @RequestBody ProposalRq proposalRq, HttpStatus status) {
+	@Transactional
+	public ResponseEntity<?> save(@Valid @RequestBody ProposalRq proposalRq) {
 		var converted = proposalRq.convert();
 		boolean exists = proposalRepository.existsByDocument(converted.getDocument());
 		if (exists)	
 			throw new ResponseStatusException(
 					HttpStatus.UNPROCESSABLE_ENTITY, "Já existe uma proposta com esse documento");
 		var saved = proposalRepository.save(converted);
+		saved = statusSolicitation(saved);
+		proposalRepository.save(saved);
 		var uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(saved.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-
+	
+	private Proposal statusSolicitation(Proposal proposal) {
+		var solicitationRq = new SolicitationRq(proposal.getDocument(), proposal.getName(), proposal.getId());
+		var entity = integration.sendSolicitaion(solicitationRq);
+		return new Proposal(proposal.getId(), 
+				proposal.getDocument(), 
+				proposal.getEmail(), 
+				proposal.getName(), 
+				proposal.getAddress(), 
+				proposal.getSalary(),
+				entity.getResultadoSolicitacao().convertStatus());
+	}
 }

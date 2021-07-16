@@ -29,6 +29,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import br.com.zupacademy.felipe.gadelha.proposta.api.convert.JacksonParse;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.ProposalRq;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Proposal;
+import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.StatusProposal;
 
 @Transactional
 @ActiveProfiles(value = "test")
@@ -44,7 +45,7 @@ class ProposalControllerTest {
 	private EntityManager manager;	
 	@Autowired
 	private JacksonParse jackson;
-
+	
 	@BeforeEach
 	void setUp() {
 		manager.createQuery("delete from Proposal").executeUpdate();
@@ -54,14 +55,14 @@ class ProposalControllerTest {
 	@Test
 	@DisplayName("should successfully save a proposal")
 	void test() throws JsonProcessingException, Exception {
-		var document = "711.790.020-24";
+		var document = "71179002024";
 		var proposalRq = new ProposalRq(document, "felipe@email.com", "Felipe Gadelha", "Rua 1", new BigDecimal(3000));
 		mockMvc.perform(post(BASE_PATH)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jackson.toJson(proposalRq)))
 		.andExpect(status().isCreated());
 		
-		var proposal = manager.createQuery("select u from Proposal u where u.document =:pDocument", Proposal.class)
+		var proposal = manager.createQuery("from Proposal p where p.document =:pDocument", Proposal.class)
 				.setParameter("pDocument", proposalRq.getDocument())
 				.getSingleResult();
 		assertNotNull(proposal.getId());
@@ -71,7 +72,6 @@ class ProposalControllerTest {
 		assertThat(proposalRq.getAddress()).isEqualTo(proposal.getAddress());
 		assertThat(proposalRq.getSalary()).isEqualTo(proposal.getSalary());
 	}
-	
 	@Test
 	@DisplayName("should return 400 for proposal null")
 	void test1() throws JsonProcessingException, Exception {
@@ -84,7 +84,7 @@ class ProposalControllerTest {
 	@Test
 	@DisplayName("should return 400 for proposal with document repeated")
 	void test2() throws JsonProcessingException, Exception {
-		var document = "711.790.020-24";
+		var document = "71179002024";
 		var proposalRq = new ProposalRq(document, "felipe@email.com", "Felipe Gadelha", "Rua 1", new BigDecimal(3000));
 		mockMvc.perform(post(BASE_PATH)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -96,5 +96,27 @@ class ProposalControllerTest {
 				.content(jackson.toJson(proposalRqRepeat)))
 		.andExpect(status().isUnprocessableEntity())
 		.andExpect(jsonPath("$.details", is("422 UNPROCESSABLE_ENTITY Já existe uma proposta com esse documento")));
-	}		
+	}
+	@Test
+	@DisplayName("should successfully save a proposal with the status NOT_ELIGIBLE")
+	void test3() throws JsonProcessingException, Exception {
+		var document = "38116222007";
+		var proposalRq = new ProposalRq(document, "felipe@email.com", "Felipe Gadelha", "Rua 1", new BigDecimal(3000));
+		mockMvc.perform(post(BASE_PATH)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(jackson.toJson(proposalRq)))
+		.andExpect(status().isCreated());
+		
+		var proposal = manager.createQuery("from Proposal p where p.document =:pDocument", Proposal.class)
+				.setParameter("pDocument", proposalRq.getDocument())
+				.getSingleResult();
+		assertNotNull(proposal.getId());
+		assertThat(proposal.getDocument()).isEqualTo(proposalRq.getDocument());
+		assertThat(proposal.getEmail()).isEqualTo(proposalRq.getEmail());
+		assertThat(proposal.getName()).isEqualTo(proposalRq.getName());
+		assertThat(proposal.getAddress()).isEqualTo(proposalRq.getAddress());
+		assertThat(proposal.getSalary()).isEqualTo(proposalRq.getSalary());
+		assertThat(proposal.getStatus()).isEqualTo(StatusProposal.NOT_ELIGIBLE);
+	}
+	
 }

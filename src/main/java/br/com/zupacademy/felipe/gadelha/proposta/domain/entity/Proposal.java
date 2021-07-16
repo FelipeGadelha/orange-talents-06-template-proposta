@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -39,6 +41,8 @@ public class Proposal {
 	@NotNull @PositiveOrZero
 	@Column(nullable = false)
 	private BigDecimal salary;
+	@Enumerated(EnumType.STRING)
+	private StatusProposal status;
 	
 	@Deprecated
 	public Proposal() {	}
@@ -49,6 +53,15 @@ public class Proposal {
 		this.name = name;
 		this.address = address;
 		this.salary = salary;
+	}
+	public Proposal(UUID id, String document, String email, String name,	String address, BigDecimal salary, StatusProposal status) {
+		this.id = id;
+		this.document = document;
+		this.email = email;
+		this.name = name;
+		this.address = address;
+		this.salary = salary;
+		this.status = status;
 	}
 	public UUID getId() {
 		return id;
@@ -68,10 +81,13 @@ public class Proposal {
 	public BigDecimal getSalary() {
 		return salary;
 	}
+	public StatusProposal getStatus() {
+		return status;
+	}
 	@Override
 	public String toString() {
 		return "Proposal [id=" + id + ", document=" + document + ", email=" + email + ", name=" + name + ", address="
-				+ address + ", salary=" + salary + "]";
+				+ address + ", salary=" + salary + ", status=" + status + "]";
 	}
 	@Override
 	public int hashCode() {
