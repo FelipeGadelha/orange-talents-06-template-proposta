@@ -6,7 +6,7 @@ public class SolicitationRs {
 	
 	private StatusSolicitation resultadoSolicitacao;
 	
-	public SolicitationRs() {	}
+	public SolicitationRs() { }
 
 	public SolicitationRs(StatusSolicitation resultadoSolicitacao) {
 		this.resultadoSolicitacao = resultadoSolicitacao;

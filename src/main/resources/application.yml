@@ -1,3 +1,7 @@
+info:
+  app:
+    name: '@project.name@'
+    version: '@project.version@'
 server:
   port: 8080
 spring:
@@ -29,8 +33,18 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-#feign:#  circuitbreaker:#    enabled: true
+    
+# Feign
+
 app:
   solicitation:
     url: http://localhost:9999
     path: /api/solicitacao
+
+# actuator
+management:
+  endpoint:    health:      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
