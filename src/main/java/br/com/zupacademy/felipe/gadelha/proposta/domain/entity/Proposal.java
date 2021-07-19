@@ -44,6 +44,8 @@ public class Proposal {
 	@Enumerated(EnumType.STRING)
 	private StatusProposal status;
 	
+	private String numberCard;
+	
 	@Deprecated
 	public Proposal() {	}
 	
@@ -54,14 +56,24 @@ public class Proposal {
 		this.address = address;
 		this.salary = salary;
 	}
-	public Proposal(UUID id, String document, String email, String name,	String address, BigDecimal salary, StatusProposal status) {
-		this.id = id;
-		this.document = document;
-		this.email = email;
-		this.name = name;
-		this.address = address;
-		this.salary = salary;
+	public Proposal(Proposal proposal, StatusProposal status) {
+		this.id = proposal.getId();
+		this.document = proposal.getDocument();
+		this.email = proposal.getEmail();
+		this.name = proposal.getName();
+		this.address = proposal.getAddress();
+		this.salary = proposal.getSalary();
 		this.status = status;
+	}
+	public Proposal(Proposal proposal, String numberCard) {
+		this.id = proposal.getId();
+		this.document = proposal.getDocument();
+		this.email = proposal.getEmail();
+		this.name = proposal.getName();
+		this.address = proposal.getAddress();
+		this.salary = proposal.getSalary();
+		this.status = proposal.getStatus();
+		this.numberCard = numberCard;
 	}
 	public UUID getId() {
 		return id;
@@ -84,10 +96,13 @@ public class Proposal {
 	public StatusProposal getStatus() {
 		return status;
 	}
+	public String getNumberCard() {
+		return numberCard;
+	}
 	@Override
 	public String toString() {
 		return "Proposal [id=" + id + ", document=" + document + ", email=" + email + ", name=" + name + ", address="
-				+ address + ", salary=" + salary + ", status=" + status + "]";
+				+ address + ", salary=" + salary + ", status=" + status + ", numberCard=" + numberCard + "]";
 	}
 	@Override
 	public int hashCode() {

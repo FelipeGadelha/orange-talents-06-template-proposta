@@ -5,30 +5,34 @@ import java.util.UUID;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class SolicitationRq {
 	
+	@JsonProperty("documento")
 	@NotNull @NotBlank
-	private String documento;
-	private String nome;
-	private UUID idProposta;
+	private String document;
+	@JsonProperty("nome")
+	private String name;
+	@JsonProperty("idProposta")
+	private UUID proposalId;
 	
-	public SolicitationRq(String documento, String nome, UUID idProposta) {
-		this.documento = documento;
-		this.nome = nome;
-		this.idProposta = idProposta;
+	public SolicitationRq(String documento, String nome, UUID proposalId) {
+		this.document = documento;
+		this.name = nome;
+		this.proposalId = proposalId;
 	}
-	
-	public String getDocumento() {
-		return documento;
+	public String getDocument() {
+		return document;
 	}
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
-	public UUID getIdProposta() {
-		return idProposta;
+	public UUID getProposalId() {
+		return proposalId;
 	}
 	@Override
 	public String toString() {
-		return "SolicitationRq [documento=" + documento + ", nome=" + nome + ", idProposta=" + idProposta + "]";
+		return "SolicitationRq [document=" + document + ", name=" + name + ", proposalId=" + proposalId + "]";
 	}
 }

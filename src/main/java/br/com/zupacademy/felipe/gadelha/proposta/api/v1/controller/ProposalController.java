@@ -48,16 +48,9 @@ public class ProposalController {
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
 	private Proposal statusSolicitation(Proposal proposal) {
 		var solicitationRq = new SolicitationRq(proposal.getDocument(), proposal.getName(), proposal.getId());
 		var entity = integration.sendSolicitaion(solicitationRq);
-		return new Proposal(proposal.getId(), 
-				proposal.getDocument(), 
-				proposal.getEmail(), 
-				proposal.getName(), 
-				proposal.getAddress(), 
-				proposal.getSalary(),
-				entity.getResultadoSolicitacao().convertStatus());
+		return new Proposal(proposal, entity.getStatus().convertStatus());
 	}
 }
