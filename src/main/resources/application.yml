@@ -8,9 +8,9 @@ spring:
   datasource:
     name: PropostaDataSource
     driver-class-name: org.postgresql.Driver    
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/proposta-db}
-    password: ${SPRING_DATASOURCE_PASSWORD:password}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    url: ${PROPOSAL_DATASOURCE_URL:jdbc:postgresql://localhost:5433/proposta-db}
+    password: ${PROPOSAL_DATASOURCE_PASSWORD:password}
+    username: ${PROPOSAL_DATASOURCE_USERNAME:postgres}
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       pool-name: propostaPool
@@ -33,13 +33,18 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
+scheduling:
+  period: ${SCHEDULING_PERIOD:60000}
     
 # Feign
 
 app:
   solicitation:
-    url: http://localhost:9999
+    url: ${APP_SOLICITATION:http://localhost:9999}
     path: /api/solicitacao
+  accounts:
+    url: ${APP_ACCOUNTS:http://localhost:8888}
+    path: /api/cartoes
 
 # actuator
 management:

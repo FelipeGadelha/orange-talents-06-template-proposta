@@ -70,7 +70,7 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.github.openfeign/feign-core -->
-		<!-- -->
+		<!--para corrigir o warn que estava dando-->
 		<dependency>
 			<groupId>io.github.openfeign</groupId>
 			<artifactId>feign-core</artifactId>

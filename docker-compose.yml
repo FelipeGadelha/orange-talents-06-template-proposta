@@ -1,6 +1,24 @@
 version: '3.9'
 services:
   
+  proposta-api:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: proposta/api
+    ports:
+      - 8081:8080
+    environment:
+      - PROPOSAL_DATASOURCE_URL=jdbc:postgresql://db:5432/proposta-db
+      - PROPOSAL_DATASOURCE_USERNAME=postgres
+      - PROPOSAL_DATASOURCE_PASSWORD=password
+      - APP_SOLICITATION=http://analise:9999
+      - APP_ACCOUNTS=http://contas:8888
+      - PROPOSAL_PROFILE=dev
+      - SCHEDULING_PERIOD=60000
+    depends_on:
+      - db
+      
   db:
     image: postgres:alpine
     container_name: pg-proposta-db
@@ -122,7 +140,6 @@ services:
     image: prom/prometheus
     volumes:
      - prometheus-volume:/etc/prometheus/
-    network_mode: bridge
     ports:
       - "9090:9090"
 
