@@ -20,5 +20,4 @@ public class CardRs {
 	public String toString() {
 		return "AccountsRs [numberCard=" + numberCard + "]";
 	}
-	
 }

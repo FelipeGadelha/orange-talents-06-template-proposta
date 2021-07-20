@@ -1,7 +1,8 @@
-package br.com.zupacademy.felipe.gadelha.proposta.api.integration;
+package br.com.zupacademy.felipe.gadelha.proposta.infra.integration;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.CardRs;
@@ -12,5 +13,8 @@ import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.CardRs;
 public interface AccountsClient {
 
 	@GetMapping
-	CardRs findCard(@RequestParam(required = true, name = "idProposta") String id);	
+	CardRs findCard(@RequestParam(required = true, name = "idProposta") String id);
+
+	@GetMapping("/{id}")
+	CardRs findCardById(@PathVariable String id);	
 }

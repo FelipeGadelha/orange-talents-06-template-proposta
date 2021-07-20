@@ -1,4 +1,4 @@
-package br.com.zupacademy.felipe.gadelha.proposta.api.integration;
+package br.com.zupacademy.felipe.gadelha.proposta.infra.integration;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
@@ -9,7 +9,6 @@ import org.springframework.web.server.ResponseStatusException;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.SolicitationRq;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.StatusSolicitation;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.SolicitationRs;
-import feign.FeignException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @FeignClient(name = "analyze", 
@@ -22,10 +21,9 @@ public interface AnalyzeClient {
 	SolicitationRs sendSolicitaion(@RequestBody SolicitationRq solicitationRq);
 
 	default SolicitationRs analyzeFallback(Exception ex) {
-		if (ex.getClass() == FeignException.UnprocessableEntity.class) {
+		if (ex.getClass() == ResponseStatusException.class && ex.getMessage().startsWith("422")) {
 			return new SolicitationRs(StatusSolicitation.COM_RESTRICAO);
 		}
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não foi possível processar a análise da proposta");
 	}
-
 }

@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.zupacademy.felipe.gadelha.proposta.api.integration.AnalyzeClient;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.ProposalRq;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.SolicitationRq;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.ProposalRs;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Proposal;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.repository.ProposalRepository;
+import br.com.zupacademy.felipe.gadelha.proposta.infra.integration.AnalyzeClient;
 
 @RestController
 @RequestMapping("/v1/proposals")

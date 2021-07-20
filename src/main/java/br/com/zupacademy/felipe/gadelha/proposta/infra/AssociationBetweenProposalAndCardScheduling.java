@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.zupacademy.felipe.gadelha.proposta.api.integration.AccountsClient;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Proposal;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.StatusProposal;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.repository.ProposalRepository;
+import br.com.zupacademy.felipe.gadelha.proposta.infra.integration.AccountsClient;
 
 @Component
 @EnableAsync
