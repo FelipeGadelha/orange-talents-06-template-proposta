@@ -26,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import br.com.zupacademy.felipe.gadelha.proposta.api.builder.AuthorizedClient;
+import br.com.zupacademy.felipe.gadelha.proposta.api.builder.TokenAuth;
 import br.com.zupacademy.felipe.gadelha.proposta.api.convert.JacksonParse;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.ProposalRq;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Proposal;
@@ -45,7 +47,9 @@ class ProposalControllerTest {
 	private EntityManager manager;	
 	@Autowired
 	private JacksonParse jackson;
-	
+	@Autowired
+	private AuthorizedClient builder;
+
 	@BeforeEach
 	void setUp() {
 		manager.createQuery("delete from Proposal").executeUpdate();
@@ -55,9 +59,11 @@ class ProposalControllerTest {
 	@Test
 	@DisplayName("should successfully save a proposal")
 	void test() throws JsonProcessingException, Exception {
+		System.err.println("---------------- TESTE" + builder.getToken(TokenAuth.READ_WRITE));
 		var document = "71179002024";
 		var proposalRq = new ProposalRq(document, "felipe@email.com", "Felipe Gadelha", "Rua 1", new BigDecimal(3000));
 		mockMvc.perform(post(BASE_PATH)
+				.header("Authorization", builder.getToken(TokenAuth.READ_WRITE))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jackson.toJson(proposalRq)))
 		.andExpect(status().isCreated());
@@ -77,6 +83,7 @@ class ProposalControllerTest {
 	void test1() throws JsonProcessingException, Exception {
 		var proposalRq = new ProposalRq(null, null, null, null, null);
 		mockMvc.perform(post(BASE_PATH)
+				.header("Authorization", builder.getToken(TokenAuth.READ_WRITE))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jackson.toJson(proposalRq)))
 		.andExpect(status().isBadRequest());
@@ -87,11 +94,13 @@ class ProposalControllerTest {
 		var document = "71179002024";
 		var proposalRq = new ProposalRq(document, "felipe@email.com", "Felipe Gadelha", "Rua 1", new BigDecimal(3000));
 		mockMvc.perform(post(BASE_PATH)
+				.header("Authorization", builder.getToken(TokenAuth.READ_WRITE))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jackson.toJson(proposalRq)))
 		.andExpect(status().isCreated());
 		var proposalRqRepeat = new ProposalRq(document, "felipe@test.com", "Felipe teste", "Rua 2", new BigDecimal(3000));
 		mockMvc.perform(post(BASE_PATH)
+				.header("Authorization", builder.getToken(TokenAuth.READ_WRITE))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jackson.toJson(proposalRqRepeat)))
 		.andExpect(status().isUnprocessableEntity())
@@ -103,6 +112,7 @@ class ProposalControllerTest {
 		var document = "38116222007";
 		var proposalRq = new ProposalRq(document, "felipe@email.com", "Felipe Gadelha", "Rua 1", new BigDecimal(3000));
 		mockMvc.perform(post(BASE_PATH)
+				.header("Authorization", builder.getToken(TokenAuth.READ_WRITE))
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(jackson.toJson(proposalRq)))
 		.andExpect(status().isCreated());

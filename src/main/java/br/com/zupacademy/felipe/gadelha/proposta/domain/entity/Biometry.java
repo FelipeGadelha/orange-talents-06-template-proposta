@@ -23,6 +23,8 @@ public class Biometry {
 	private String cardNumber;
 	@CreationTimestamp
 	private LocalDateTime registrationDate;
+	@Deprecated
+	public Biometry() {	}
 	
 	public Biometry(String fingerprint, String cardNumber) {
 		this.fingerprint = fingerprint;

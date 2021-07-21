@@ -2,8 +2,17 @@ info:
   app:
     name: '@project.name@'
     version: '@project.version@'
+    
 server:
   port: 8080
+  
+scheduling:
+  period: ${SCHEDULING_PERIOD:60000}
+  
+#logging:#  level:#    org: 
+#      springframework:
+#        security: DEBUG
+        
 spring:
   datasource:
     name: PropostaDataSource
@@ -33,11 +42,15 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-scheduling:
-  period: ${SCHEDULING_PERIOD:60000}
-    
+    # Keycloak
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/proposal}
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposal/protocol/openid-connect/certs}  
+             
 # Feign
-
 app:
   solicitation:
     url: ${APP_SOLICITATION:http://localhost:9999}
@@ -47,9 +60,11 @@ app:
     path: /api/cartoes
 
 # actuator
-management:
-  endpoint:    health:      show-details: always
+management:  endpoint:    health:
+      show-details: always
   endpoints:
     web:
       exposure:
         include: '*'
+
+

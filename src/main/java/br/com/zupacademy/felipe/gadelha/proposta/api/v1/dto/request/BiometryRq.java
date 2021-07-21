@@ -11,7 +11,7 @@ public class BiometryRq {
 
 	@NotBlank @IsBase64(message = "Não está no formato Base64")
 	private String fingerprint;
-
+	
 	@JsonCreator(mode = Mode.PROPERTIES)
 	public BiometryRq(String fingerprint) {
 		this.fingerprint = fingerprint;
