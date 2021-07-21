@@ -12,7 +12,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "Biometrics")
+@Table(name = "biometrics")
 public class Biometry {
 	
 	@Id 
