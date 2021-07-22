@@ -2,19 +2,21 @@ info:
   app:
     name: '@project.name@'
     version: '@project.version@'
-    
 server:
   port: 8080
   
 scheduling:
   period: ${SCHEDULING_PERIOD:60000}
   
-#logging:#  level:#    org: 
-#      springframework:
-#        security: DEBUG
-        
+logging:  level:    org: 
+      springframework:
+        security: DEBUG
+        cloud:
+          openfeign:
+            FeignClient: DEBUG
 spring:
-  datasource:
+  application:
+    name: proposal-api  datasource:
     name: PropostaDataSource
     driver-class-name: org.postgresql.Driver    
     url: ${PROPOSAL_DATASOURCE_URL:jdbc:postgresql://localhost:5433/proposta-db}
@@ -48,9 +50,11 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/proposal}
-          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposal/protocol/openid-connect/certs}  
-             
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposal/protocol/openid-connect/certs}               
 # Feign
+feign:
+  client:
+    decodeSlash: false    
 app:
   solicitation:
     url: ${APP_SOLICITATION:http://localhost:9999}

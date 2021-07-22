@@ -1,11 +1,14 @@
 package br.com.zupacademy.felipe.gadelha.proposta.api.v1.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,8 @@ import br.com.zupacademy.felipe.gadelha.proposta.infra.integration.AccountsClien
 @RequestMapping("/v1/cards")
 public class CardController {
 
+	@Value("${spring.application.name}")
+	private String applicationName;
 	private final BiometryRepository biometryRepository;
 	private final LockedOrderRepository lockedOrderRepository;
 	private final AccountsClient accountsClient;
@@ -61,6 +66,7 @@ public class CardController {
 		if (optional.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
+		accountsClient.locked(id, Map.of("sistemaResponsavel", applicationName));
 		lockedOrderRepository
 				.save(new LockedOrder(id, request.getRemoteAddr(), userAgent));
 		return ResponseEntity.ok().build();

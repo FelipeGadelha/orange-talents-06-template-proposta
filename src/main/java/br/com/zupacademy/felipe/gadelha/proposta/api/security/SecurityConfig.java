@@ -15,7 +15,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests(a -> a
             .antMatchers(HttpMethod.GET, "/v1/proposals/**").hasAuthority("SCOPE_proposal-scope:read")
             .antMatchers(HttpMethod.POST, "/v1/proposals/**").hasAuthority("SCOPE_proposal-scope:write")
-            .antMatchers(HttpMethod.POST, "/v1/cards/*/biometrics/**").hasAuthority("SCOPE_proposal-scope:write")
+            .antMatchers(HttpMethod.POST, "/v1/cards/**").hasAuthority("SCOPE_proposal-scope:write")
             .anyRequest().authenticated())
         .sessionManagement(
         		s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

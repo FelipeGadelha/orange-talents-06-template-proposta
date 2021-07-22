@@ -12,6 +12,6 @@ public class FeignErrorDecoder implements ErrorDecoder {
 	@Override
 	public Exception decode(String methodKey, Response response) {
 		var status = HttpStatus.resolve(response.status());
-		return FeignStatus.convert(status).exceptionHandler();
+		return FeignStatus.convert(status).exceptionHandler(response);
 	}
 }
