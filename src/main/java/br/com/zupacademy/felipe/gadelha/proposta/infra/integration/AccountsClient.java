@@ -13,7 +13,8 @@ import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.CardLockedR
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.CardRs;
 
 @FeignClient(name = "accounts", 
-	url = "${app.accounts.url}${app.accounts.path}")
+	url = "${app.accounts.url}",
+	path = "${app.accounts.path}")
 public interface AccountsClient {
 
 	@GetMapping
@@ -21,7 +22,7 @@ public interface AccountsClient {
 
 	@GetMapping("/{id}")
 	CardRs findCardById(@PathVariable String id);
-	
-	@PostMapping("/{id}​/bloqueios")
-	CardLockedRs locked(@PathVariable String id, @RequestBody Map<String, ?> body);
+
+	@PostMapping("/{id}/bloqueios")
+	CardLockedRs locked(@PathVariable(name = "id") String id, @RequestBody Map<String, ?> body);
 }

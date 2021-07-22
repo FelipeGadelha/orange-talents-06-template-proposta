@@ -1,6 +1,5 @@
 package br.com.zupacademy.felipe.gadelha.proposta.api.v1.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.request.BiometryRq;
+import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.CardLockedRs;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.Biometry;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.entity.LockedOrder;
 import br.com.zupacademy.felipe.gadelha.proposta.domain.repository.BiometryRepository;
@@ -66,9 +66,9 @@ public class CardController {
 		if (optional.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
-		accountsClient.locked(id, Map.of("sistemaResponsavel", applicationName));
+		CardLockedRs status = accountsClient.locked(id, Map.of("sistemaResponsavel", applicationName));
 		lockedOrderRepository
-				.save(new LockedOrder(id, request.getRemoteAddr(), userAgent));
+				.save(new LockedOrder(id, request.getRemoteAddr(), userAgent, status.getResult()));
 		return ResponseEntity.ok().build();
 	}
 	

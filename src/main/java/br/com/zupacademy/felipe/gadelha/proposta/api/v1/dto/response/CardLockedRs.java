@@ -8,6 +8,9 @@ public class CardLockedRs {
 	
 	@JsonProperty("resultado")
 	private String result;
+	
+	@Deprecated
+	public CardLockedRs() {	}
 
 	@JsonCreator(mode = Mode.PROPERTIES)
 	public CardLockedRs(String result) {

@@ -54,7 +54,7 @@ spring:
 # Feign
 feign:
   client:
-    decodeSlash: false    
+    decodeSlash: false   
 app:
   solicitation:
     url: ${APP_SOLICITATION:http://localhost:9999}

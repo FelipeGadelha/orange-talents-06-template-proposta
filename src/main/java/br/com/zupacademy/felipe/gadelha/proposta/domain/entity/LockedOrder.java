@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 @Entity
 @Table(name = "locked_orders")
 public class LockedOrder {
@@ -26,16 +28,20 @@ public class LockedOrder {
 	@NotBlank
 	@Column(nullable = false, name = "user_agent")
 	private String userAgent;
+	@CreationTimestamp
 	@Column(name = "registration_date")
 	private LocalDateTime registrationDate;
+	
+	private String status;
 	
 	@Deprecated
 	public LockedOrder() {	}
 	
-	public LockedOrder(@NotBlank String numberCard, @NotBlank String ipAddress, @NotBlank String userAgent) {
+	public LockedOrder(@NotBlank String numberCard, @NotBlank String ipAddress, @NotBlank String userAgent, String status) {
 		this.numberCard = numberCard;
 		this.ipAddress = ipAddress;
 		this.userAgent = userAgent;
+		this.status = status;
 	}
 	public Long getId() {
 		return id;
@@ -52,10 +58,14 @@ public class LockedOrder {
 	public LocalDateTime getRegistrationDate() {
 		return registrationDate;
 	}
+	public String getStatus() {
+		return status;
+	}
+	
 	@Override
 	public String toString() {
 		return "LockedOrder [id=" + id + ", numberCard=" + numberCard + ", ipAddress=" + ipAddress + ", userAgent="
-				+ userAgent + ", registrationDate=" + registrationDate + "]";
+				+ userAgent + ", registrationDate=" + registrationDate + ", status=" + status + "]";
 	}
 	@Override
 	public int hashCode() {
