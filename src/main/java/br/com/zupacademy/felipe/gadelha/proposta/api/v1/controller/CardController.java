@@ -58,7 +58,7 @@ public class CardController {
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	@PostMapping("/{id}/lock")
+	@PostMapping("/{id}/locks")
 	@Transactional
 	public ResponseEntity<?> cardLock(@PathVariable String id, @RequestHeader("User-Agent") String userAgent, HttpServletRequest request) {
 		this.cardValidate(id);
