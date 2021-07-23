@@ -18,7 +18,6 @@ services:
       - SCHEDULING_PERIOD=60000
     depends_on:
       - db
-      
   db:
     image: postgres:alpine
     container_name: pg-proposta-db
