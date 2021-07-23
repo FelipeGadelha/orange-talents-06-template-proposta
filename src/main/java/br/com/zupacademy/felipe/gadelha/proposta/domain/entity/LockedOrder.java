@@ -1,24 +1,26 @@
 package br.com.zupacademy.felipe.gadelha.proposta.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "locked_orders")
 public class LockedOrder {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Id 
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	private UUID id;
 	@NotBlank
 	@Column(nullable = false, name = "number_card")
 	private String numberCard;
@@ -43,7 +45,7 @@ public class LockedOrder {
 		this.userAgent = userAgent;
 		this.status = status;
 	}
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 	public String getNumberCard() {

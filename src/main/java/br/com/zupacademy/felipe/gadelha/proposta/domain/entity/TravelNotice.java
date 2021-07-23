@@ -1,25 +1,27 @@
 package br.com.zupacademy.felipe.gadelha.proposta.domain.entity;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "travel_notices")
 public class TravelNotice {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Id 
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	private UUID id;
 	@NotNull @NotBlank
 	@Column(nullable = false)
 	private String numberCard;
@@ -48,7 +50,7 @@ public class TravelNotice {
 		this.remoteAddr = remoteAddr;
 		this.status = status;
 	}
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 	public String getNumberCard() {

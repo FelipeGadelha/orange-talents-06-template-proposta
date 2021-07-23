@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.CardLockedRs;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.CardRs;
 import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.TravelNoticeRs;
+import br.com.zupacademy.felipe.gadelha.proposta.api.v1.dto.response.WalletRs;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @FeignClient(name = "accounts", 
@@ -33,10 +34,14 @@ public interface AccountsClient {
 	@PostMapping("/{id}/avisos")
 	TravelNoticeRs notice(@PathVariable String id, @RequestBody Map<String, ?> body);
 	
+	@PostMapping("/{id}/carteiras")
+	WalletRs wallet(@PathVariable String id, @RequestBody Map<String, ?> body);
+
 	default TravelNoticeRs accountsFallback(Exception ex) throws Exception {
 		if (ex.getClass() == ResponseStatusException.class && ex.getMessage().startsWith("422")) {
 			return new TravelNoticeRs("FALHA");
 		}
 		throw ex;
 	}
+
 }
