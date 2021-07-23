@@ -71,6 +71,18 @@ management:  endpoint:    health:
     web:
       exposure:
         include: '*'
+        
 # prometheus
     prometheus:
       enabled: true
+
+#Jaeger
+opentracing:
+  jaeger:
+    service-name: ${spring.application.name}
+    enabled: ${JAEGER_ENABLED:true}
+    http-sender:
+      url: ${JAEGER_URL:http://localhost:14268/api/traces}
+    probabilistic-sampler:
+# Jaeger - Tipo de amostragem (probabilístico) e sua configuração (1 = 100%)
+      sampling-rate: ${JAEGER_SAMPLER:1}
