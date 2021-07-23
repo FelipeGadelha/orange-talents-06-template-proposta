@@ -35,18 +35,44 @@ public class TravelNotice {
 	@NotNull @NotBlank
 	@Column(nullable = false)
 	private String remoteAddr;
+	private String status;
 
 	@Deprecated
 	public TravelNotice() { }
 	
-	public TravelNotice(String numberCard, String destiny, LocalDate endTrip, String userAgent, String remoteAddr) {
+	public TravelNotice(String numberCard, String destiny, LocalDate endTrip, String userAgent, String remoteAddr, String status) {
 		this.numberCard = numberCard;
 		this.destiny = destiny;
 		this.endTrip = endTrip;
 		this.userAgent = userAgent;
 		this.remoteAddr = remoteAddr;
+		this.status = status;
 	}
-	
+	public Long getId() {
+		return id;
+	}
+	public String getNumberCard() {
+		return numberCard;
+	}
+	public String getDestiny() {
+		return destiny;
+	}
+	public LocalDate getEndTrip() {
+		return endTrip;
+	}
+	public String getUserAgent() {
+		return userAgent;
+	}
+	public String getRemoteAddr() {
+		return remoteAddr;
+	}
+	public String getStatus() {
+		return status;
+	}
 
-	
+	@Override
+	public String toString() {
+		return "TravelNotice [id=" + id + ", numberCard=" + numberCard + ", destiny=" + destiny + ", endTrip=" + endTrip
+				+ ", userAgent=" + userAgent + ", remoteAddr=" + remoteAddr + ", status=" + status + "]";
+	}
 }

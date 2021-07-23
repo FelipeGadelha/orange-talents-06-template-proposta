@@ -32,12 +32,13 @@ public class TravelNoticeRq {
 		return endTrip;
 	}
 
-	public TravelNotice convert(String numberCard, String userAgent, HttpServletRequest request) {
+	public TravelNotice convert(String numberCard, String userAgent, HttpServletRequest request, String status) {
 		return new TravelNotice(numberCard, 
 				destiny, 
 				endTrip, 
 				userAgent, 
-				request.getRemoteAddr());
+				request.getRemoteAddr(),
+				status);
 	}
 	
 	@Override
