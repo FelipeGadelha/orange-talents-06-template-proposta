@@ -65,10 +65,12 @@ app:
 
 # actuator
 management:  endpoint:    health:
+      status:        http-mapping:          down: 500
       show-details: always
   endpoints:
     web:
       exposure:
         include: '*'
-
-
+# prometheus
+    prometheus:
+      enabled: true
