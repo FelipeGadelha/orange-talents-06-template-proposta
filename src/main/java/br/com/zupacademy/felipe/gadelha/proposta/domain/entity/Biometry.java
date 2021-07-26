@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 
+import io.vavr.control.Either;
+
 @Entity
 @Table(name = "biometrics")
 public class Biometry {

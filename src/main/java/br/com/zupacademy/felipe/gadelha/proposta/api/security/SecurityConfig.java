@@ -15,11 +15,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(a -> a
         	.antMatchers("/swagger-ui/**", "/v3/api-docs/swagger-config/**").permitAll()	
+        	.antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+        	.antMatchers(HttpMethod.GET, "/actuator/prometheus").permitAll()
             .antMatchers(HttpMethod.GET, "/v1/proposals/**").hasAuthority("SCOPE_proposal-scope:read")
             .antMatchers(HttpMethod.POST, "/v1/proposals/**").hasAuthority("SCOPE_proposal-scope:write")
             .antMatchers(HttpMethod.POST, "/v1/cards/**").hasAuthority("SCOPE_proposal-scope:write")
-            .antMatchers(HttpMethod.GET, "/actuator/prometheus").hasAuthority("SCOPE_proposal-scope:read")
-            .antMatchers(HttpMethod.GET, "/actuator/**").hasAuthority("SCOPE_proposal-scope:read")
             .anyRequest().authenticated())
         .sessionManagement(
         		s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
