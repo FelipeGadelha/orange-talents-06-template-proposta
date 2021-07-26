@@ -17,6 +17,7 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "proposals")
@@ -26,8 +27,8 @@ public class Proposal {
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	private UUID id;
-	@NotNull @NotBlank @Size(max = 14)
-	@Column(nullable = false, unique = true, length = 14)
+	@NotNull @NotBlank
+	@Column(nullable = false, unique = true)
 	private String document;
 	@NotNull @NotBlank @Email
 	@Column(nullable = false)
@@ -50,7 +51,7 @@ public class Proposal {
 	public Proposal() {	}
 	
 	public Proposal(String document, String email, String name,	String address, BigDecimal salary) {
-		this.document = document;
+		this.document = encrypt(document);
 		this.email = email;
 		this.name = name;
 		this.address = address;
@@ -98,6 +99,9 @@ public class Proposal {
 	}
 	public String getNumberCard() {
 		return numberCard;
+	}
+	private String encrypt(String document) {
+		return new BCryptPasswordEncoder().encode(document);
 	}
 	@Override
 	public String toString() {
