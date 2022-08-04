@@ -4,11 +4,11 @@ info:
     version: '@project.version@'
 server:
   port: 8080
-  
 scheduling:
   period: ${SCHEDULING_PERIOD:60000}
-  
-logging:  level:    org: 
+logging:
+  level:
+    org: 
       springframework:
         security: DEBUG
         cloud:
@@ -16,7 +16,8 @@ logging:  level:    org:
             FeignClient: DEBUG
 spring:
   application:
-    name: proposal-api  datasource:
+    name: proposal-api
+  datasource:
     name: PropostaDataSource
     driver-class-name: org.postgresql.Driver    
     url: ${PROPOSAL_DATASOURCE_URL:jdbc:postgresql://localhost:5433/proposta-db}
@@ -44,13 +45,15 @@ spring:
           lob:
             non_contextual_creation: true
     show-sql: true
-    # Keycloak
+    
+# Keycloak
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:18080/auth/realms/proposal}
-          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposal/protocol/openid-connect/certs}               
+          jwk-set-uri: ${KEYCLOAK_JWKS_URI:http://localhost:18080/auth/realms/proposal/protocol/openid-connect/certs}  
+             
 # Feign
 feign:
   client:
@@ -64,8 +67,12 @@ app:
     path: /api/cartoes
 
 # actuator
-management:  endpoint:    health:
-      status:        http-mapping:          down: 500
+management:
+  endpoint:
+    health:
+      status:
+        http-mapping:
+          down: 500
       show-details: always
   endpoints:
     web:
